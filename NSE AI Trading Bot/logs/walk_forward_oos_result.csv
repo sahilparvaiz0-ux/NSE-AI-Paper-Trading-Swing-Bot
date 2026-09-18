@@ -1,0 +1,22 @@
+,0
+chosen_strategy_params,"{'ema_fast': 10, 'ema_slow': 30, 'rsi_entry_low': 40, 'rsi_entry_high': 70}"
+chosen_risk_params,"{'stop_loss_atr_mult': 3.0, 'take_profit_atr_mult': 3.0}"
+in_sample_sharpe,0.9152279445507754
+in_sample_return_pct,58.02251381391959
+oos_starting_equity,1000000.0
+oos_ending_equity,915180.7717024893
+oos_total_return_pct,-8.481922829751065
+oos_cagr_pct,-8.509774301466798
+oos_annual_volatility_pct,6.553042336296124
+oos_sharpe_ratio,-2.3333502907057873
+oos_sortino_ratio,-2.8848410281523704
+oos_max_drawdown_pct,-10.107122101167594
+oos_max_drawdown_date,2025-09-30 00:00:00
+oos_total_trades,41
+oos_win_rate,0.21951219512195122
+oos_profit_factor,0.36169256610742206
+oos_avg_win,7855.306666666666
+oos_avg_loss,-6108.24
+oos_expectancy,-3043.0712195121946
+oos_gross_profit,70697.76
+oos_gross_loss,195463.68

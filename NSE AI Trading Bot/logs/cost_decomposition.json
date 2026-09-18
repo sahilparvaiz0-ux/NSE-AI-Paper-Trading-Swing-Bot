@@ -1,0 +1,9 @@
+{
+  "brokerage_inr": 17581.589802,
+  "slippage_inr": 29302.64967,
+  "stt_inr": 29455.944089999997,
+  "total_transaction_cost_inr": 76340.18356199999,
+  "gross_pnl_inr": 306589.0,
+  "net_trading_pnl_inr": 230248.73000000004,
+  "costs_as_pct_of_gross_pnl": 24.89984427425641
+}

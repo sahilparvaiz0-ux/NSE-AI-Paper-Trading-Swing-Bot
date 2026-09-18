@@ -1,0 +1,11 @@
+{
+  "method": "stationary block bootstrap",
+  "n_bootstrap_samples": 2000,
+  "block_length": 35,
+  "confidence_level": 0.9,
+  "sharpe_ci_low": -0.3042170461125492,
+  "sharpe_ci_high": 1.0089613741235302,
+  "total_pnl_ci_low_inr": 227145.1426009321,
+  "total_pnl_ci_high_inr": 921075.4782113753,
+  "probability_sharpe_leq_zero": 0.188
+}

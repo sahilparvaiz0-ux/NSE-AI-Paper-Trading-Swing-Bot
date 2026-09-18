@@ -1,0 +1,193 @@
+{
+  "risk_analytics": {
+    "total_equity_gain_inr": 534921.9286000491,
+    "net_trading_pnl_inr": 230248.73000000004,
+    "interest_on_idle_cash_inr": 304673.1986000491,
+    "trading_share_of_gain_pct": 43.043427029171696,
+    "interest_share_of_gain_pct": 56.95657297082831,
+    "avg_capital_deployed_pct": 28.149213787941818,
+    "median_capital_deployed_pct": 23.703092213089715,
+    "pct_days_fully_in_cash": 33.843674456083804,
+    "avg_open_positions": 1.2763900080580177,
+    "max_concurrent_positions_allowed": 5,
+    "historical_var_95_daily_pct": -0.6225655303163569,
+    "historical_cvar_95_daily_pct": -1.041307353007918,
+    "historical_var_99_daily_pct": -1.2274003067957422,
+    "historical_cvar_99_daily_pct": -1.6828993087291613,
+    "worst_daily_return_pct": -3.131813823683305,
+    "skewness": -0.06315782633595589,
+    "excess_kurtosis": 8.486931852373399,
+    "longest_underwater_days": 204,
+    "pct_days_underwater": 77.98387096774194
+  },
+  "benchmark_controls": [
+    {
+      "portfolio": "Trading bot",
+      "total_return_pct": 53.492192860004174,
+      "cagr_pct": 8.974417597354133,
+      "ann_volatility_pct": 6.939138310240332,
+      "sharpe_ratio": 0.3530499265166826,
+      "max_drawdown_pct": -7.740682088087835
+    },
+    {
+      "portfolio": "100% equal-weight basket",
+      "total_return_pct": 117.88647328928596,
+      "cagr_pct": 16.907151698297906,
+      "ann_volatility_pct": 14.26929495313355,
+      "sharpe_ratio": 0.7253258525810697,
+      "max_drawdown_pct": -14.19170922194748
+    },
+    {
+      "portfolio": "48.6% basket / 51.4% cash (vol-matched)",
+      "total_return_pct": 74.28853047251944,
+      "cagr_pct": 11.78740604139481,
+      "ann_volatility_pct": 6.939138310240332,
+      "sharpe_ratio": 0.7253258525810701,
+      "max_drawdown_pct": -6.264778013819139
+    },
+    {
+      "portfolio": "40% basket / 60% cash",
+      "total_return_pct": 67.43716697114101,
+      "cagr_pct": 10.891803779436104,
+      "ann_volatility_pct": 5.7077179812534204,
+      "sharpe_ratio": 0.72532585258107,
+      "max_drawdown_pct": -5.025599480050447
+    },
+    {
+      "portfolio": "50% basket / 50% cash",
+      "total_return_pct": 75.38974913169912,
+      "cagr_pct": 11.928719605850935,
+      "ann_volatility_pct": 7.134647476566775,
+      "sharpe_ratio": 0.7253258525810696,
+      "max_drawdown_pct": -6.460556427509722
+    },
+    {
+      "portfolio": "Bot + 50% index sleeve on idle cash",
+      "total_return_pct": 83.48127666918191,
+      "cagr_pct": 12.9458659075119,
+      "ann_volatility_pct": 10.225842940923847,
+      "sharpe_ratio": 0.6219760264259054,
+      "max_drawdown_pct": -11.406864773758462
+    },
+    {
+      "portfolio": "Bot + 100% index sleeve on idle cash",
+      "total_return_pct": 115.98805864833093,
+      "cagr_pct": 16.702129942154077,
+      "ann_volatility_pct": 14.94765846386188,
+      "sharpe_ratio": 0.6871040084849155,
+      "max_drawdown_pct": -15.339242634322236
+    }
+  ],
+  "market_model": {
+    "beta_vs_equal_weight_basket": 0.2586062423721435,
+    "alpha_daily": -8.995377403846541e-06,
+    "alpha_annualised_pct": -0.2266835105769328,
+    "alpha_t_statistic": -0.08544266556121972,
+    "r_squared": 0.28279514564751634,
+    "vol_matched_basket_weight": 0.48629861062031604,
+    "avg_pairwise_return_correlation": 0.3017512356861156,
+    "per_ticker_buy_hold_return_pct": {
+      "RELIANCE": 28.61,
+      "TCS": 14.46,
+      "HDFCBANK": 71.82,
+      "INFY": 41.68,
+      "ICICIBANK": 265.11,
+      "SBIN": 358.46,
+      "ITC": 135.03,
+      "LT": 305.29,
+      "KOTAKBANK": 52.69,
+      "HINDUNILVR": 20.02
+    },
+    "note": "Price returns only; dividends excluded."
+  },
+  "cost_decomposition": {
+    "brokerage_inr": 17581.589802,
+    "slippage_inr": 29302.64967,
+    "stt_inr": 29455.944089999997,
+    "total_transaction_cost_inr": 76340.18356199999,
+    "gross_pnl_inr": 306589.0,
+    "net_trading_pnl_inr": 230248.73000000004,
+    "costs_as_pct_of_gross_pnl": 24.89984427425641
+  },
+  "block_bootstrap": {
+    "method": "stationary block bootstrap",
+    "n_bootstrap_samples": 2000,
+    "block_length": 35,
+    "confidence_level": 0.9,
+    "sharpe_ci_low": -0.3042170461125492,
+    "sharpe_ci_high": 1.0089613741235302,
+    "total_pnl_ci_low_inr": 227145.1426009321,
+    "total_pnl_ci_high_inr": 921075.4782113753,
+    "probability_sharpe_leq_zero": 0.188
+  },
+  "random_entry_null": {
+    "n_simulations": 2000,
+    "n_trades_per_simulation": 98,
+    "actual_strategy_net_pnl_inr": 230248.73000000004,
+    "null_mean_pnl_inr": 241526.45907664698,
+    "null_median_pnl_inr": 237519.00153,
+    "null_5th_pct_inr": -57613.64284250015,
+    "null_95th_pct_inr": 536785.2038034997,
+    "actual_percentile_within_null": 48.3,
+    "one_sided_p_value": 0.517,
+    "share_of_random_runs_profitable_pct": 91.60000000000001
+  },
+  "multiple_testing": {
+    "configurations_tested": 20,
+    "grid_sharpe_mean": 0.5994999999999999,
+    "grid_sharpe_sd": 0.19972283426367599,
+    "observed_best_sharpe": 0.92,
+    "expected_best_sharpe_approx_null": 1.0883709345835029,
+    "winner_distance_above_grid_mean_sd": 1.6047238723684092
+  },
+  "year_table": [
+    {
+      "exit_date": 2020,
+      "trades": 7,
+      "net_trading_pnl_inr": 69782.31,
+      "win_rate_pct": 85.71428571428571,
+      "interest_inr": 14572.51168700197,
+      "equity_change_pct": 8.435482168700204
+    },
+    {
+      "exit_date": 2021,
+      "trades": 17,
+      "net_trading_pnl_inr": 109294.2,
+      "win_rate_pct": 58.82352941176471,
+      "interest_inr": 61375.98722345261,
+      "equity_change_pct": 15.735271618737157
+    },
+    {
+      "exit_date": 2022,
+      "trades": 26,
+      "net_trading_pnl_inr": -4955.679999999993,
+      "win_rate_pct": 34.61538461538461,
+      "interest_inr": 35908.397926286605,
+      "equity_change_pct": 2.4519452040066225
+    },
+    {
+      "exit_date": 2023,
+      "trades": 18,
+      "net_trading_pnl_inr": 64842.93,
+      "win_rate_pct": 44.44444444444444,
+      "interest_inr": 62811.11161713994,
+      "equity_change_pct": 9.866744454450993
+    },
+    {
+      "exit_date": 2024,
+      "trades": 16,
+      "net_trading_pnl_inr": 18962.65,
+      "win_rate_pct": 37.5,
+      "interest_inr": 55751.533323244796,
+      "equity_change_pct": 5.254895727284059
+    },
+    {
+      "exit_date": 2025,
+      "trades": 14,
+      "net_trading_pnl_inr": -27677.68,
+      "win_rate_pct": 28.57142857142857,
+      "interest_inr": 60093.44468047314,
+      "equity_change_pct": 2.1574463691989454
+    }
+  ]
+}

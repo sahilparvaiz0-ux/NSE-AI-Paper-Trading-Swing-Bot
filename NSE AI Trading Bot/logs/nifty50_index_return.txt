@@ -1,0 +1,2 @@
+NIFTY 50 price-index return, 2020-10-01 close 11,416.95 to 2025-09-30 close 24,691.95: 116.27%.
+Sources: Capstocks daily newsletter (01-Oct-2020) and SensexIndia historical data (30-Sep-2025).

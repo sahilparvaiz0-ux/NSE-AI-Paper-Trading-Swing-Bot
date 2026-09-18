@@ -1,0 +1,12 @@
+{
+  "n_simulations": 2000,
+  "n_trades_per_simulation": 98,
+  "actual_strategy_net_pnl_inr": 230248.73000000004,
+  "null_mean_pnl_inr": 241526.45907664698,
+  "null_median_pnl_inr": 237519.00153,
+  "null_5th_pct_inr": -57613.64284250015,
+  "null_95th_pct_inr": 536785.2038034997,
+  "actual_percentile_within_null": 48.3,
+  "one_sided_p_value": 0.517,
+  "share_of_random_runs_profitable_pct": 91.60000000000001
+}

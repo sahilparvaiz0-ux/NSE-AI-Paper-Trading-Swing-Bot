@@ -1,0 +1,79 @@
+FINAL AUDIT: 78/78 checks passed
+PASS | Workbook sheets | 
+PASS | RELIANCE rows/date range | 1241 rows 2020-10-01->2025-09-30
+PASS | TCS rows/date range | 1241 rows 2020-10-01->2025-09-30
+PASS | HDFCBANK rows/date range | 1241 rows 2020-10-01->2025-09-30
+PASS | INFY rows/date range | 1241 rows 2020-10-01->2025-09-30
+PASS | ICICIBANK rows/date range | 1241 rows 2020-10-01->2025-09-30
+PASS | SBIN rows/date range | 1241 rows 2020-10-01->2025-09-30
+PASS | ITC rows/date range | 1241 rows 2020-10-01->2025-09-30
+PASS | LT rows/date range | 1241 rows 2020-10-01->2025-09-30
+PASS | KOTAKBANK rows/date range | 1241 rows 2020-10-01->2025-09-30
+PASS | HINDUNILVR rows/date range | 1241 rows 2020-10-01->2025-09-30
+PASS | Baseline ending equity | 
+PASS | Baseline total return | 
+PASS | Baseline CAGR | 
+PASS | Baseline Sharpe | 
+PASS | Baseline max drawdown | 
+PASS | Trade count | 
+PASS | Cash ledger non-negative | 76.60421934851911
+PASS | Trade P&L + interest reconciliation | 534921.8963534902
+PASS | Risk VaR/CVaR alignment | 
+PASS | Return attribution alignment | 
+PASS | Vol-matched control present | 
+PASS | Market regression alignment | 
+PASS | Null model alignment | 
+PASS | Block bootstrap alignment | 
+PASS | Cost reconciliation | 
+PASS | Sensitivity grid 20 | 
+PASS | Best in-sample parameters | 
+PASS | OOS result | 
+PASS | AI OOS result | 
+PASS | Report contains 53.49% | 
+PASS | Report contains 8.95% | 
+PASS | Report contains -7.74% | 
+PASS | Report contains -8.48% | 
+PASS | Report contains -4.68% | 
+PASS | Report contains 0.516 | 
+PASS | Report contains -0.62% | 
+PASS | Report contains -1.04% | 
+PASS | Report contains 48.3rd percentile | 
+PASS | Report contains 0.517 | 
+PASS | Report contains 2,30,249 | 
+PASS | Report contains 3,04,673 | 
+PASS | Report contains 74.29% | 
+PASS | Report contains 0.26 | 
+PASS | Report contains -0.23% | 
+PASS | Report contains 6.94% | 
+PASS | No contradictory starting-equity note | 
+PASS | Advanced module documented | 
+PASS | Business implications included | 
+PASS | Syntax ai_filter.py | 
+PASS | Syntax audit_check.py | 
+PASS | Syntax advanced_analysis.py | 
+PASS | Syntax main.py | 
+PASS | Syntax universe.py | 
+PASS | Syntax data_io.py | 
+PASS | Syntax real_data_loader.py | 
+PASS | Syntax plot_benchmark_comparison.py | 
+PASS | Syntax indicators.py | 
+PASS | Syntax strategy.py | 
+PASS | Syntax risk_manager.py | 
+PASS | Syntax ai_oos_validation.py | 
+PASS | Syntax sensitivity_analysis.py | 
+PASS | Syntax metrics.py | 
+PASS | Syntax consolidate_data.py | 
+PASS | Syntax walk_forward.py | 
+PASS | Syntax data_generator.py | 
+PASS | Syntax backtester.py | 
+PASS | File README.md | 
+PASS | File requirements.txt | 
+PASS | File data/nifty_data.xlsx | 
+PASS | File logs/performance_summary.json | 
+PASS | File logs/trade_log.csv | 
+PASS | File logs/equity_curve.csv | 
+PASS | File logs/ai_oos_result.json | 
+PASS | File logs/monte_carlo_null.json | 
+PASS | File logs/block_bootstrap.json | 
+PASS | File TradingBot_Report_Final.docx | 
+PASS | No temp/compiled files | []

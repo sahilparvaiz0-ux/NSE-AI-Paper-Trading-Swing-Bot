@@ -1,0 +1,22 @@
+{
+  "beta_vs_equal_weight_basket": 0.2586062423721435,
+  "alpha_daily": -8.995377403846541e-06,
+  "alpha_annualised_pct": -0.2266835105769328,
+  "alpha_t_statistic": -0.08544266556121972,
+  "r_squared": 0.28279514564751634,
+  "vol_matched_basket_weight": 0.48629861062031604,
+  "avg_pairwise_return_correlation": 0.3017512356861156,
+  "per_ticker_buy_hold_return_pct": {
+    "RELIANCE": 28.61,
+    "TCS": 14.46,
+    "HDFCBANK": 71.82,
+    "INFY": 41.68,
+    "ICICIBANK": 265.11,
+    "SBIN": 358.46,
+    "ITC": 135.03,
+    "LT": 305.29,
+    "KOTAKBANK": 52.69,
+    "HINDUNILVR": 20.02
+  },
+  "note": "Price returns only; dividends excluded."
+}

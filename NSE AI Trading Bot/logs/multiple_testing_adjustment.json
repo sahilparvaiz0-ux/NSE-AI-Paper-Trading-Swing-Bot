@@ -1,0 +1,8 @@
+{
+  "configurations_tested": 20,
+  "grid_sharpe_mean": 0.5994999999999999,
+  "grid_sharpe_sd": 0.19972283426367599,
+  "observed_best_sharpe": 0.92,
+  "expected_best_sharpe_approx_null": 1.0883709345835029,
+  "winner_distance_above_grid_mean_sd": 1.6047238723684092
+}

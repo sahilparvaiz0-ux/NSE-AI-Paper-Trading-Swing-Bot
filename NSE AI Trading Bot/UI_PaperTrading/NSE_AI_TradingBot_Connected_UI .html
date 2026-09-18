@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>NSE AI Trading Bot — Paper Trading UI</title>
+<style>
+*{box-sizing:border-box}body{margin:0;font-family:Inter,Segoe UI,Arial,sans-serif;background:#f4f6f8;color:#18212b}
+header{background:#17202a;color:#fff;padding:18px 24px;display:flex;justify-content:space-between;align-items:center}
+h1{font-size:20px;margin:0}.sub{font-size:12px;color:#b9c4ce;margin-top:4px}
+.status{font-size:12px;padding:7px 11px;border-radius:16px;background:#6b7280}.ok{background:#238636}.bad{background:#b42318}
+nav{display:flex;gap:8px;padding:12px 18px;background:#fff;border-bottom:1px solid #dfe4e8;position:sticky;top:0;z-index:3}
+nav button,.btn{border:1px solid #cbd3da;background:#fff;padding:8px 12px;border-radius:7px;cursor:pointer}nav button.active{background:#17202a;color:#fff}
+main{max-width:1400px;margin:auto;padding:18px}.page{display:none}.page.active{display:block}
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}.card{background:#fff;border:1px solid #e0e5e9;border-radius:10px;padding:15px}.label{font-size:12px;color:#68737d}.value{font-size:23px;font-weight:700;margin-top:6px}
+table{width:100%;border-collapse:collapse;background:#fff}.tablewrap{overflow:auto;border:1px solid #e0e5e9;border-radius:10px}th,td{padding:9px 10px;border-bottom:1px solid #edf0f2;text-align:left;font-size:13px;white-space:nowrap}th{background:#f7f8f9}
+.buy{color:#16794b;font-weight:700}.sell{color:#b42318;font-weight:700}.muted{color:#68737d}.section{margin-top:18px}.row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+input,select{padding:9px;border:1px solid #cbd3da;border-radius:7px;background:#fff}.ticker{font-weight:700}
+.signalbox{padding:14px;border:1px solid #dce2e7;border-radius:9px;background:#fff;margin-top:12px}
+pre{white-space:pre-wrap;background:#17202a;color:#eef2f5;padding:12px;border-radius:8px;min-height:100px}
+small{color:#68737d}.danger{color:#b42318}.positive{color:#16794b}
+@media(max-width:900px){.grid{grid-template-columns:repeat(2,1fr)}}@media(max-width:600px){.grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<header><div><h1>NSE AI Trading Bot</h1><div class="sub">Connected to submitted bot modules + existing Nifty data • Paper trading only</div></div><div id="status" class="status">Connecting…</div></header>
+<nav>
+<button class="tab active" data-page="dashboard">Dashboard</button><button class="tab" data-page="portfolio">Portfolio</button>
+<button class="tab" data-page="scanner">Scanner</button><button class="tab" data-page="backtest">Backtest</button><button class="tab" data-page="chat">Bot Chat</button>
+</nav>
+<main>
+<section id="dashboard" class="page active">
+<div class="grid">
+<div class="card"><div class="label">Cash</div><div id="cash" class="value">—</div></div>
+<div class="card"><div class="label">Equity</div><div id="equity" class="value">—</div></div>
+<div class="card"><div class="label">P&L</div><div id="pnl" class="value">—</div></div>
+<div class="card"><div class="label">Open Positions</div><div id="open" class="value">—</div></div>
+</div>
+<div class="section card"><div class="row"><b>Paper Account</b><button class="btn" onclick="resetAccount()">Reset to ₹10,00,000</button><small id="market">—</small></div>
+<p class="muted">Market prices/signals come from the workbook supplied with the submitted project. Orders are simulated locally by this added paper-trading bridge; no broker order is sent.</p></div>
+<div class="section"><h3>Latest Signals</h3><div id="dashSignals" class="tablewrap"></div></div>
+</section>
+
+<section id="portfolio" class="page">
+<h3>Paper Portfolio</h3><div id="positions" class="tablewrap"></div>
+<div class="section"><h3>Order History</h3><div id="orders" class="tablewrap"></div></div>
+</section>
+
+<section id="scanner" class="page">
+<div class="row"><button class="btn" onclick="scan()">Run Scanner</button><small>Uses the submitted strategy: EMA20/50 + RSI14 + MACD confirmation.</small></div>
+<div id="scannerOut" class="tablewrap section"></div>
+</section>
+
+<section id="backtest" class="page">
+<div class="card"><div class="row"><button class="btn" onclick="runBacktest()">Run Submitted Bot Backtest</button><small>Runs the actual PortfolioBacktester against the supplied workbook.</small></div><div id="btOut" class="section"></div></div>
+</section>
+
+<section id="chat" class="page">
+<div class="card"><b>Bot command interface</b><p class="muted">Try: <code>ANALYZE RELIANCE</code>, <code>SCAN</code>, <code>PORTFOLIO</code>, <code>POSITIONS</code>, <code>PERFORMANCE</code>, <code>BUY RELIANCE 10</code>, <code>SELL RELIANCE 10</code>.</p>
+<div class="row"><input id="cmd" style="flex:1" placeholder="Enter command" onkeydown="if(event.key==='Enter')sendCmd()"><button class="btn" onclick="sendCmd()">Send</button></div><pre id="chatOut"></pre></div>
+</section>
+</main>
+<script>
+const api=location.origin;
+const money=x=>'₹'+Number(x||0).toLocaleString('en-IN',{maximumFractionDigits:2});
+const pct=x=>Number(x||0).toFixed(2)+'%';
+async function get(path,opt={}){let r=await fetch(api+path,opt);if(!r.ok)throw new Error(await r.text());return r.json()}
+function esc(x){return String(x??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]))}
+function table(headers,rows){return '<table><thead><tr>'+headers.map(x=>'<th>'+x+'</th>').join('')+'</tr></thead><tbody>'+rows.map(r=>'<tr>'+r.map(x=>'<td>'+x+'</td>').join('')+'</tr>').join('')+'</tbody></table>'}
+document.querySelectorAll('.tab').forEach(b=>b.onclick=()=>{document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));b.classList.add('active');document.getElementById(b.dataset.page).classList.add('active')});
+async function refresh(){
+ try{
+  let s=await get('/api/state'); document.getElementById('status').textContent='Connected';document.getElementById('status').className='status ok';
+  cash.textContent=money(s.cash);equity.textContent=money(s.equity);pnl.textContent=money(s.pnl);open.textContent=s.positions.length;market.textContent='Latest data: '+s.last_market_date;
+  let rows=s.positions.map(p=>[esc(p.ticker),p.qty,money(p.entry_price),money(p.current_price),money(p.market_value),money(p.unrealized_pnl),'<button class="btn" onclick="sellOne(\''+esc(p.ticker)+'\')">Sell</button>']);
+  positions.innerHTML=rows.length?table(['Ticker','Qty','Entry','Current','Value','Unrealized P&L','Action'],rows):'<div style="padding:15px">No open paper positions.</div>';
+  let or=s.orders.slice().reverse().map(o=>[o.timestamp,esc(o.side),esc(o.ticker),o.qty,money(o.price),money(o.value),esc(o.status)]);
+  orders.innerHTML=or.length?table(['Time','Side','Ticker','Qty','Price','Value','Status'],or):'<div style="padding:15px">No orders yet.</div>';
+  dashSignals.innerHTML=table(['Ticker','Date','Close','Rule Entry','Rule Exit','AI Prob.','AI Pass','Stop','Target'],s.signals.map(x=>[esc(x.ticker),x.date,money(x.close),x.rule_entry?'YES':'—',x.rule_exit?'YES':'—',x.ai_probability==null?'—':pct(x.ai_probability*100),x.ai_pass==null?'—':(x.ai_pass?'YES':'NO'),money(x.stop_loss),money(x.take_profit)]));
+ }catch(e){document.getElementById('status').textContent='Disconnected';document.getElementById('status').className='status bad';console.error(e)}
+}
+async function scan(){scannerOut.innerHTML='Running…';try{let d=await get('/api/scan');scannerOut.innerHTML=table(['Ticker','Date','Close','EMA20','EMA50','RSI','MACD Hist','Entry','Exit','Strength'],d.signals.map(x=>[esc(x.ticker),x.date,money(x.close),money(x.ema_fast),money(x.ema_slow),Number(x.rsi).toFixed(2),Number(x.macd_hist).toFixed(3),x.rule_entry?'BUY SIGNAL':'—',x.rule_exit?'EXIT SIGNAL':'—',Number(x.signal_strength).toFixed(5)]))}catch(e){scannerOut.textContent=e.message}}
+async function runBacktest(){btOut.textContent='Running actual submitted backtester…';try{let d=await get('/api/backtest');btOut.innerHTML='<div class="grid">'+[['Starting',money(d.starting_equity)],['Ending',money(d.ending_equity)],['Return',pct(d.total_return_pct)],['CAGR',pct(d.cagr_pct)],['Volatility',pct(d.annual_volatility_pct)],['Sharpe',Number(d.sharpe_ratio).toFixed(2)],['Max DD',pct(d.max_drawdown_pct)],['Trades',d.total_trades]].map(x=>'<div class="card"><div class="label">'+x[0]+'</div><div class="value">'+x[1]+'</div></div>').join('')+'</div><p class="muted">This is the submitted rule-based backtest, not a claim of live performance.</p>'}catch(e){btOut.textContent=e.message}}
+async function analyze(t){let d=await get('/api/analyze/'+encodeURIComponent(t));return d}
+async function sellOne(t){let q=prompt('Quantity to sell:', '1');if(!q)return;try{await get('/api/order',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({side:'SELL',ticker:t,qty:Number(q)})});await refresh();alert('Paper sell executed.')}catch(e){alert(e.message)}}
+async function resetAccount(){if(!confirm('Reset paper account and delete its paper orders/positions?'))return;await get('/api/reset',{method:'POST'});await refresh()}
+async function sendCmd(){let c=document.getElementById('cmd').value.trim();if(!c)return;let out=document.getElementById('chatOut');out.textContent='Processing…';try{let d=await get('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({command:c})});out.textContent=d.text;await refresh()}catch(e){out.textContent=e.message}}
+setInterval(refresh,30000);refresh();scan();
+</script>
+</body></html>
