@@ -1,0 +1,256 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>NSE AI Trading Bot — Paper Trading Dashboard</title>
+<style>
+*{box-sizing:border-box}body{margin:0;font-family:Segoe UI,Arial,sans-serif;background:#f4f6f8;color:#18212b}
+header{background:#17202a;color:#fff;padding:18px 28px;display:flex;justify-content:space-between;align-items:center}
+h1{margin:0;font-size:23px}.sub{margin-top:5px;color:#b9c4ce;font-size:13px}.status{background:#238636;padding:8px 14px;border-radius:18px;font-size:12px}
+nav{background:#fff;border-bottom:1px solid #ddd;padding:11px 20px;display:flex;gap:8px;flex-wrap:wrap}
+nav button{padding:9px 15px;border:1px solid #ccd3d9;background:#fff;border-radius:7px;cursor:pointer}
+nav button.active{background:#17202a;color:#fff}
+main{max-width:1450px;margin:auto;padding:22px}.page{display:none}.page.active{display:block}
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}.grid5{display:grid;grid-template-columns:repeat(5,1fr);gap:14px}
+.card{background:#fff;border:1px solid #e0e5e9;border-radius:10px;padding:16px}.label{font-size:12px;color:#68737d}.value{font-size:23px;font-weight:700;margin-top:6px}.small{font-size:12px;color:#68737d;margin-top:5px}
+.section{margin-top:20px}.section h2{font-size:17px;margin:0 0 10px}
+table{width:100%;border-collapse:collapse;background:#fff;border:1px solid #e0e5e9;border-radius:10px;overflow:hidden}
+th,td{padding:10px;border-bottom:1px solid #edf0f2;text-align:left;font-size:13px}th{background:#f7f8f9}
+.btn{border:1px solid #cbd3da;background:#fff;padding:9px 13px;border-radius:7px;cursor:pointer}.btn.primary{background:#17202a;color:#fff}
+.btn.buy{background:#e7f6ed;color:#16794b}.btn.sell{background:#fff0f0;color:#a33}
+.row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}input,select{padding:10px;border:1px solid #ccd3d9;border-radius:7px}
+.badge{padding:4px 8px;border-radius:12px;font-size:11px}.buybadge{background:#e7f6ed;color:#16794b}.sellbadge{background:#fff0f0;color:#a33}.neutral{background:#eef1f4;color:#59636d}
+.note{background:#fff;border-left:4px solid #17202a;padding:12px;margin-top:15px;font-size:13px}
+.kpi{font-size:18px;font-weight:700}.bar{height:9px;background:#e8ecef;border-radius:8px;overflow:hidden;margin-top:8px}.fill{height:100%;background:#17202a}
+pre{white-space:pre-wrap;background:#17202a;color:#eef2f5;padding:15px;border-radius:8px;min-height:140px}
+.two{display:grid;grid-template-columns:1.35fr .65fr;gap:15px}.three{display:grid;grid-template-columns:repeat(3,1fr);gap:15px}
+.metricline{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid #edf0f2;font-size:13px}
+.chat{height:250px;overflow:auto;background:#fff;border:1px solid #e0e5e9;border-radius:10px;padding:15px}.msg{padding:8px 11px;margin:7px 0;border-radius:8px;background:#f1f3f5;font-size:13px}.user{background:#e8eef5}
+footer{text-align:center;color:#7a838b;font-size:11px;padding:25px}
+@media(max-width:950px){.grid,.grid5,.three,.two{grid-template-columns:1fr 1fr}}@media(max-width:600px){.grid,.grid5,.three,.two{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<header>
+<div><h1>NSE AI Trading Bot</h1><div class="sub">Nifty-50 Swing Trading • Technical Signals • Random Forest Validation • ATR Risk Management • Paper Trading</div></div>
+<div class="status">● PAPER TRADING ACTIVE</div>
+</header>
+
+<nav>
+<button class="tab active" onclick="show('dashboard',this)">Dashboard</button>
+<button class="tab" onclick="show('portfolio',this)">Portfolio</button>
+<button class="tab" onclick="show('scanner',this)">Market Scanner</button>
+<button class="tab" onclick="show('backtest',this)">Backtest & Risk</button>
+<button class="tab" onclick="show('ai',this)">AI Validation</button>
+<button class="tab" onclick="show('chat',this)">Bot Chat</button>
+</nav>
+
+<main>
+<section id="dashboard" class="page active">
+<div class="grid">
+<div class="card"><div class="label">Starting Capital</div><div class="value">₹10,00,000</div><div class="small">Paper trading capital</div></div>
+<div class="card"><div class="label">Current Equity</div><div class="value" id="equity">₹10,00,000</div><div class="small">Updates with paper orders</div></div>
+<div class="card"><div class="label">Available Cash</div><div class="value" id="cash">₹10,00,000</div><div class="small">No real funds used</div></div>
+<div class="card"><div class="label">Open Positions</div><div class="value" id="positions">0</div><div class="small">Simulated positions</div></div>
+</div>
+
+<div class="section grid5">
+<div class="card"><div class="label">Strategy Return</div><div class="value">53.49%</div></div>
+<div class="card"><div class="label">CAGR</div><div class="value">8.95%</div></div>
+<div class="card"><div class="label">Sharpe Ratio</div><div class="value">0.35</div></div>
+<div class="card"><div class="label">Max Drawdown</div><div class="value">-7.74%</div></div>
+<div class="card"><div class="label">Total Trades</div><div class="value">98</div></div>
+</div>
+
+<div class="section two">
+<div>
+<h2>Latest Market Signals</h2>
+<table><thead><tr><th>Stock</th><th>Price</th><th>EMA20</th><th>EMA50</th><th>RSI14</th><th>MACD</th><th>Signal</th><th>AI Prob.</th></tr></thead>
+<tbody id="dashSignals"></tbody></table>
+</div>
+<div>
+<h2>System Status</h2>
+<div class="card">
+<div class="metricline"><span>Exchange</span><b>NSE</b></div>
+<div class="metricline"><span>Universe</span><b>Nifty 50</b></div>
+<div class="metricline"><span>Strategy</span><b>EMA + RSI + MACD</b></div>
+<div class="metricline"><span>Risk Control</span><b>ATR-based</b></div>
+<div class="metricline"><span>AI Model</span><b>Random Forest</b></div>
+<div class="metricline"><span>Target</span><b>Next 5-day positive return</b></div>
+<div class="metricline"><span>Data Through</span><b>30-Sep-2025</b></div>
+<div class="metricline"><span>Execution</span><b>Paper Trading</b></div>
+</div>
+</div>
+</div>
+</section>
+
+<section id="portfolio" class="page">
+<h2>Paper Trading Portfolio</h2>
+<div class="grid">
+<div class="card"><div class="label">Cash Balance</div><div class="value" id="pcash">₹10,00,000</div></div>
+<div class="card"><div class="label">Portfolio Value</div><div class="value" id="pvalue">₹10,00,000</div></div>
+<div class="card"><div class="label">Unrealized P&L</div><div class="value" id="ppnl">₹0</div></div>
+<div class="card"><div class="label">Orders</div><div class="value" id="ordersCount">0</div></div>
+</div>
+<div class="section">
+<table><thead><tr><th>Symbol</th><th>Quantity</th><th>Entry Price</th><th>Current Price</th><th>Value</th><th>P&L</th><th>Action</th></tr></thead>
+<tbody id="holdings"><tr><td colspan="7">No open paper positions. Use Market Scanner to place a paper order.</td></tr></tbody></table>
+</div>
+<div class="section">
+<h2>Order History</h2>
+<table><thead><tr><th>Time</th><th>Symbol</th><th>Side</th><th>Qty</th><th>Price</th><th>Status</th></tr></thead><tbody id="orders"><tr><td colspan="6">No paper orders yet.</td></tr></tbody></table>
+</div>
+</section>
+
+<section id="scanner" class="page">
+<h2>Market Scanner — Nifty 50</h2>
+<div class="row"><input id="search" placeholder="Search symbol e.g. TCS"><button class="btn primary" onclick="scan()">Scan Market</button><span class="small">Technical indicators and AI probability shown for decision support.</span></div>
+<div class="section"><table><thead><tr><th>Symbol</th><th>Price</th><th>EMA20</th><th>EMA50</th><th>RSI14</th><th>MACD</th><th>ATR</th><th>AI Prob.</th><th>Signal</th><th>Paper Order</th></tr></thead><tbody id="scannerRows"></tbody></table></div>
+<div class="section two">
+<div class="card"><h2>Signal Logic</h2><p class="small">The trading strategy combines EMA 20/50 trend direction, RSI(14), MACD confirmation and ATR-based risk management. The Random Forest layer provides an additional probability estimate; it is evaluated separately on held-out data.</p></div>
+<div class="card"><h2>Risk Controls</h2><p class="small">Position sizing and exits use ATR-derived risk parameters. The interface records simulated orders only and does not transmit orders to a broker.</p></div>
+</div>
+</section>
+
+<section id="backtest" class="page">
+<h2>Backtest & Risk Analytics</h2>
+<div class="grid5">
+<div class="card"><div class="label">Initial Capital</div><div class="value">₹10,00,000</div></div>
+<div class="card"><div class="label">Final Capital</div><div class="value">₹15,34,922</div></div>
+<div class="card"><div class="label">Total Return</div><div class="value">53.49%</div></div>
+<div class="card"><div class="label">Volatility</div><div class="value">6.94%</div></div>
+<div class="card"><div class="label">Max Drawdown</div><div class="value">-7.74%</div></div>
+</div>
+<div class="section three">
+<div class="card"><div class="label">Win Rate</div><div class="kpi">44%</div><div class="bar"><div class="fill" style="width:44%"></div></div></div>
+<div class="card"><div class="label">Profit Factor</div><div class="kpi">1.36</div><div class="small">Gross profit / gross loss</div></div>
+<div class="card"><div class="label">Expectancy</div><div class="kpi">₹2,349</div><div class="small">Average expected P&L per trade</div></div>
+</div>
+<div class="section two">
+<div>
+<h2>Risk Metrics</h2>
+<table><tbody>
+<tr><td>Sharpe Ratio</td><td><b>0.35</b></td></tr>
+<tr><td>Sortino Ratio</td><td><b>0.51</b></td></tr>
+<tr><td>VaR (95%)</td><td><b>-0.62%</b></td></tr>
+<tr><td>CVaR (95%)</td><td><b>-1.04%</b></td></tr>
+<tr><td>Total Trades</td><td><b>98</b></td></tr>
+<tr><td>Backtest Horizon</td><td><b>Historical Nifty-50 data through 30-Sep-2025</b></td></tr>
+</tbody></table>
+</div>
+<div>
+<h2>Out-of-Sample Results</h2>
+<div class="card">
+<div class="metricline"><span>Baseline OOS Return</span><b>-8.48%</b></div>
+<div class="metricline"><span>AI-filtered OOS Return</span><b>-4.68%</b></div>
+<div class="metricline"><span>AI OOS AUC</span><b>0.516</b></div>
+<p class="small">The held-out results are shown separately from the full-period baseline. The OOS AUC indicates weak classification skill in this implementation.</p>
+</div>
+</div>
+</div>
+<div class="note"><b>Interpretation:</b> Historical backtest performance and held-out performance are separate evidence. The interface reports both so that in-sample results are not presented as proof of persistent future trading performance.</div>
+</section>
+
+<section id="ai" class="page">
+<h2>AI Validation</h2>
+<div class="grid">
+<div class="card"><div class="label">Model</div><div class="value">Random Forest</div><div class="small">Supervised classification</div></div>
+<div class="card"><div class="label">Prediction Target</div><div class="value">5-Day</div><div class="small">Next-five-day positive return</div></div>
+<div class="card"><div class="label">OOS AUC</div><div class="value">0.516</div><div class="small">Held-out evaluation</div></div>
+<div class="card"><div class="label">AI-Filtered OOS Return</div><div class="value">-4.68%</div><div class="small">Compared with baseline OOS -8.48%</div></div>
+</div>
+<div class="section two">
+<div class="card">
+<h2>AI Pipeline</h2>
+<div class="metricline"><span>1. Feature preparation</span><b>Technical features</b></div>
+<div class="metricline"><span>2. Model training</span><b>Random Forest</b></div>
+<div class="metricline"><span>3. Model freeze</span><b>Held-out evaluation</b></div>
+<div class="metricline"><span>4. Probability output</span><b>AI signal filter</b></div>
+<div class="metricline"><span>5. Strategy evaluation</span><b>OOS backtest</b></div>
+</div>
+<div class="card">
+<h2>Validation Reading</h2>
+<p class="small">AUC of 0.516 is close to 0.50, so the model demonstrates only weak discrimination in the held-out sample. The AI layer should therefore be described as a validation/filtering component rather than a proven source of predictive edge.</p>
+</div>
+</div>
+</section>
+
+<section id="chat" class="page">
+<h2>Trading Bot Assistant</h2>
+<div class="chat" id="chatbox">
+<div class="msg"><b>Bot:</b> Connected to the paper-trading interface. Try: <b>scan market</b>, <b>portfolio</b>, <b>risk report</b>, <b>backtest</b>, or <b>analyze TCS</b>.</div>
+</div>
+<div class="section row"><input id="chatInput" style="flex:1" placeholder="Ask the trading bot..."><button class="btn primary" onclick="chat()">Send</button></div>
+</section>
+</main>
+
+<footer>NSE AI Trading Bot • Paper trading only • Historical data through 30-Sep-2025 • No live broker order execution</footer>
+
+<script>
+const stocks=[
+["RELIANCE",2928.40,2887.20,2835.60,61.8,18.42,54.30,.68,"BUY"],
+["TCS",3018.75,2984.10,2951.80,58.4,12.76,48.20,.64,"BUY"],
+["INFY",1512.30,1521.40,1498.60,49.7,-2.14,31.80,.51,"HOLD"],
+["HDFCBANK",1728.55,1704.20,1679.30,63.2,14.85,36.50,.71,"BUY"],
+["ICICIBANK",1364.20,1351.10,1328.70,59.6,10.31,29.40,.66,"BUY"],
+["SBIN",811.65,803.40,792.10,55.8,7.26,19.70,.58,"HOLD"],
+["ITC",456.10,461.20,458.90,44.9,-4.18,10.80,.43,"HOLD"],
+["LT",3718.30,3682.50,3611.40,64.7,22.10,73.40,.74,"BUY"],
+["BHARTIARTL",1687.20,1661.80,1628.30,67.1,19.40,34.60,.76,"BUY"],
+["AXISBANK",1128.45,1114.20,1097.80,57.3,8.15,25.30,.62,"BUY"]
+];
+let cash=1000000, holdings={}, orders=[];
+
+function money(n){return "₹"+Math.round(n).toLocaleString("en-IN")}
+function show(id,btn){
+document.querySelectorAll(".page").forEach(x=>x.classList.remove("active"));
+document.querySelectorAll(".tab").forEach(x=>x.classList.remove("active"));
+document.getElementById(id).classList.add("active");btn.classList.add("active");
+if(id==="scanner")renderScanner(); if(id==="portfolio")renderPortfolio();
+}
+function signalBadge(s){return '<span class="badge '+(s==="BUY"?"buybadge":"neutral")+'">'+s+'</span>'}
+function renderDash(){
+document.getElementById("dashSignals").innerHTML=stocks.slice(0,6).map(s=>`<tr><td><b>${s[0]}</b></td><td>${s[1].toLocaleString("en-IN")}</td><td>${s[2]}</td><td>${s[3]}</td><td>${s[4]}</td><td>${s[5]}</td><td>${signalBadge(s[8])}</td><td>${(s[7]*100).toFixed(0)}%</td></tr>`).join("");
+}
+function renderScanner(){
+let q=(document.getElementById("search").value||"").toUpperCase();
+let data=stocks.filter(s=>s[0].includes(q));
+document.getElementById("scannerRows").innerHTML=data.map(s=>`<tr><td><b>${s[0]}</b></td><td>₹${s[1].toLocaleString("en-IN")}</td><td>${s[2]}</td><td>${s[3]}</td><td>${s[4]}</td><td>${s[5]}</td><td>${s[6]}</td><td>${(s[7]*100).toFixed(0)}%</td><td>${signalBadge(s[8])}</td><td><button class="btn buy" onclick="buy('${s[0]}')">BUY</button> <button class="btn sell" onclick="sell('${s[0]}')">SELL</button></td></tr>`).join("");
+}
+function buy(sym){
+let s=stocks.find(x=>x[0]===sym), qty=Math.max(1,Math.floor(100000/s[1]));
+let cost=qty*s[1]; if(cost>cash){alert("Insufficient paper-trading cash.");return}
+cash-=cost; holdings[sym]=(holdings[sym]||0)+qty;
+orders.unshift({time:new Date().toLocaleTimeString(),sym,side:"BUY",qty,price:s[1],status:"PAPER_FILLED"});
+renderPortfolio();renderDash();alert(`${sym}: paper BUY filled for ${qty} shares at ₹${s[1]}.`);
+}
+function sell(sym){
+let qty=holdings[sym]||0;if(!qty){alert("No open paper position in "+sym);return}
+let s=stocks.find(x=>x[0]===sym);cash+=qty*s[1];delete holdings[sym];
+orders.unshift({time:new Date().toLocaleTimeString(),sym,side:"SELL",qty,price:s[1],status:"PAPER_FILLED"});
+renderPortfolio();renderDash();alert(`${sym}: paper SELL filled for ${qty} shares at ₹${s[1]}.`);
+}
+function renderPortfolio(){
+let value=cash,rows="";
+Object.entries(holdings).forEach(([sym,qty])=>{let s=stocks.find(x=>x[0]===sym);let v=qty*s[1];value+=v;rows+=`<tr><td><b>${sym}</b></td><td>${qty}</td><td>—</td><td>₹${s[1].toLocaleString("en-IN")}</td><td>${money(v)}</td><td>—</td><td><button class="btn sell" onclick="sell('${sym}')">SELL</button></td></tr>`});
+document.getElementById("holdings").innerHTML=rows||'<tr><td colspan="7">No open paper positions. Use Market Scanner to place a paper order.</td></tr>';
+document.getElementById("orders").innerHTML=orders.map(o=>`<tr><td>${o.time}</td><td>${o.sym}</td><td>${o.side}</td><td>${o.qty}</td><td>₹${o.price.toLocaleString("en-IN")}</td><td><span class="badge buybadge">${o.status}</span></td></tr>`).join("")||'<tr><td colspan="6">No paper orders yet.</td></tr>';
+document.getElementById("cash").textContent=money(cash);document.getElementById("pcash").textContent=money(cash);document.getElementById("pvalue").textContent=money(value);document.getElementById("equity").textContent=money(value);document.getElementById("pnl").textContent=money(value-1000000);document.getElementById("ppnl").textContent=money(value-1000000);document.getElementById("positions").textContent=Object.keys(holdings).length;document.getElementById("ordersCount").textContent=orders.length;
+}
+function scan(){renderScanner()}
+function chat(){
+let inp=document.getElementById("chatInput"),q=inp.value.trim(),low=q.toLowerCase();if(!q)return;
+let box=document.getElementById("chatbox");box.innerHTML+=`<div class="msg user"><b>You:</b> ${q}</div>`;
+let ans="I can provide market signals, portfolio status, risk metrics, backtest metrics, or a stock analysis.";
+if(low.includes("portfolio")) ans=`Portfolio value is ${document.getElementById("pvalue").textContent} with ${document.getElementById("positions").textContent} open position(s). Available cash: ${document.getElementById("pcash").textContent}.`;
+else if(low.includes("risk")) ans="Risk report: Max Drawdown -7.74%, VaR 95% -0.62%, CVaR 95% -1.04%, volatility 6.94%, Sharpe 0.35 and Sortino 0.51.";
+else if(low.includes("backtest")) ans="Backtest: ₹10 lakh initial capital → ₹15,34,922 final capital; total return 53.49%, CAGR 8.95%, 98 trades, win rate 44%, profit factor 1.36.";
+else if(low.includes("scan")) ans="Current scanner shows BUY signals for RELIANCE, TCS, HDFCBANK, ICICIBANK, LT, BHARTIARTL and AXISBANK in this interface dataset.";
+else if(low.includes("analyze")){let s=stocks.find(x=>low.includes(x[0].toLowerCase()));ans=s?`${s[0]}: price ₹${s[1]}, EMA20 ${s[2]}, EMA50 ${s[3]}, RSI14 ${s[4]}, MACD ${s[5]}, ATR ${s[6]}, AI probability ${(s[7]*100).toFixed(0)}%, signal ${s[8]}.`:"Specify a supported Nifty-50 symbol such as TCS or RELIANCE."}
+box.innerHTML+=`<div class="msg"><b>Bot:</b> ${ans}</div>`;box.scrollTop=box.scrollHeight;inp.value="";
+}
+document.getElementById("search").addEventListener("input",renderScanner);
+renderDash();renderScanner();renderPortfolio();
+</script>
+</body></html>
